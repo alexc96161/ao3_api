@@ -312,7 +312,7 @@ class Session(GuestSession):
                 new = Work(workid, load=False)
                 setattr(new, "title", workname)
                 setattr(new, "authors", authors)
-                print(new)
+                print(self)
                 self._subscriptions.append(new)
             elif type_ == "user":
                 self._subscriptions.append(user)
