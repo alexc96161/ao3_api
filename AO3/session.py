@@ -129,7 +129,7 @@ class GuestSession:
 
         Returns:
             requests.Request
-        """
+        """  
 
         req = self.session.post(*args, **kwargs)
         if req.status_code == 429:
@@ -312,6 +312,7 @@ class Session(GuestSession):
                 new = Work(workid, load=False)
                 setattr(new, "title", workname)
                 setattr(new, "authors", authors)
+                print(new)
                 self._subscriptions.append(new)
             elif type_ == "user":
                 self._subscriptions.append(user)
