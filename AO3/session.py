@@ -2,6 +2,7 @@ import datetime
 import re
 import time
 from functools import cached_property
+from numpy import true_divide
 
 import requests
 from bs4 import BeautifulSoup
@@ -320,6 +321,24 @@ class Session(GuestSession):
                 setattr(new, "name", workname)
                 setattr(new, "authors", authors)
                 self._subscriptions.append(new)
+
+    @threadable.threadable
+    def _load_work_ids(self, page=1):        
+        url = self._subscriptions_url.format(self.username, page)
+        soup = self.request(url)
+        subscriptions = soup.find("dl", {"class": "subscription index group"})
+        for sub in subscriptions.find_all("dt"):
+            iswork = False
+            workid = None
+            for a in sub.find_all("a"):
+                if a["href"].startswith("/works"):
+                    workid = utils.workid_from_url(a["href"])
+                    iswork = True
+                
+                
+            if iswork == True:
+                self._subscriptions.append(workid)
+
 
     @cached_property
     def _history_pages(self):
